@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>압구정 삼성 | Beyond Expectations</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        /* ============================================
+           [1. CSS 변수 및 리셋]
+        ============================================ */
+        :root {
+            --bg-light: #f4f4f4;
+            --bg-dark: #1d1d21;
+            --bg-darker: #0d0d0d;
+            --text-dark: #1d1d21;
+            --text-light: #f5f5f0;
+            --text-muted: #888;
+            --gold: #b8956b;
+            --gold-light: #d4b896;
+            --font-serif: 'Noto Serif KR', serif;
+            --font-sans: 'Noto Sans KR', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: var(--text-light);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ============================================
+           [2. 커스텀 커서]
+        ============================================ */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            background: rgba(184, 149, 107, 0.15);
+            display: none;
+        }
+
+        @media (pointer: fine) {
+            .cursor, .cursor-follower {
+                display: block;
+            }
+            body {
+                cursor: none;
+            }
+            a, button {
+                cursor: none;
+            }
+        }
+
+        /* ============================================
+           [3. 네비게이션]
+        ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .nav__logo {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--text-light);
+        }
+
+        .nav__menu {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav__item {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .nav__item::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold-light);
+            transition: width 0.3s ease;
+        }
+
+        .nav__item:hover::after {
+            width: 100%;
+        }
+
+        /* ============================================
+           [4. 스크롤 인디케이터]
+        ============================================ */
+        .scroll-nav {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            mix-blend-mode: difference;
+        }
+
+        .scroll-nav__label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .scroll-nav__line {
+            width: 1px;
+            height: 80px;
+            background: rgba(245, 245, 240, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-nav__progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: var(--gold-light);
+        }
+
+        /* ============================================
+           [5. 로딩 스크린]
+        ============================================ */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader__text {
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            overflow: hidden;
+        }
+
+        .loader__text span {
+            display: inline-block;
+        }
+
+        /* ============================================
+           [6. 히어로 섹션]
+        ============================================ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero__bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            will-change: transform;
+        }
+
+        .hero__bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1);
+        }
+
+        .hero__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+        }
+
+        .hero__content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 24px;
+        }
+
+        .hero__eyebrow {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero__title {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .hero__title-line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero__title-line span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        .hero__title strong {
+            font-weight: 600;
+            color: var(--gold-light);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+        }
+
+        .scroll-indicator span {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.5; transform: scaleY(0.7); }
+        }
+
+        /* ============================================
+           [7. 마퀴 섹션]
+        ============================================ */
+        .marquee {
+            padding: 50px 0;
+            overflow: hidden;
+            background: var(--bg-dark);
+        }
+
+        .marquee__inner {
+            display: flex;
+            width: fit-content;
+        }
+
+        .marquee__text {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+            padding: 0 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .marquee__text span {
+            color: var(--gold);
+            -webkit-text-stroke: 0;
+            margin: 0 15px;
+            font-size: 0.6em;
+        }
+
+        /* ============================================
+           [8. 헤리티지 섹션]
+        ============================================ */
+        .heritage {
+            padding: 180px 40px;
+            position: relative;
+        }
+
+        .heritage__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .heritage__image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heritage__image-inner {
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            clip-path: inset(100% 0 0 0);
+        }
+
+        .heritage__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.2);
+        }
+
+        .heritage__image-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            font-family: var(--font-serif);
+            font-size: 6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            opacity: 0.06;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .heritage__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .heritage__label {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .heritage__title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .heritage__title strong {
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .heritage__text {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            line-height: 2;
+            color: var(--text-muted);
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .heritage__text strong {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           [9. 패럴랙스 섹션]
+        ============================================ */
+        .parallax-section {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -20%;
+            left: 0;
+            width: 100%;
+            height: 140%;
+            will-change: transform;
+        }
+
+        .parallax-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--text-light);
+            padding: 60px 24px;
+            max-width: 900px;
+        }
+
+        .parallax-content .eyebrow {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .parallax-content .title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .parallax-content .title strong {
+            font-weight: 600;
+            color: var(--gold-light);
+        }
+
+        .parallax-content .sub-text {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 24px;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* ============================================
+           [10. 스킬 섹션 (랜드마크)]
+        ============================================ */
+        .skills {
+            padding: 140px 40px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .skills__container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skills__label {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 60px;
+            display: block;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .skills__list {
+            list-style: none;
+        }
+
+        .skills__item {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .skills__item:last-child {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skills__item-label {
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            opacity: 0.5;
+            transition: all 0.4s ease;
+        }
+
+        .skills__item:hover .skills__item-label {
+            opacity: 1;
+            color: var(--gold-light);
+        }
+
+        .skills__item-number {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+        }
+
+        .skills__item:hover .skills__item-number {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ============================================
+           [11. Swiper 슬라이더 섹션]
+        ============================================ */
+        .slider-section {
+            padding: 140px 0;
+            background: #eaeae6;
+            overflow: hidden;
+        }
+
+        .slider-header {
+            text-align: center;
+            padding: 0 24px;
+            margin-bottom: 60px;
+        }
+
+        .slider-header .label {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .slider-header .title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .slider-header .title strong {
+            font-weight: 600;
+        }
+
+        .slider-header .sub-text {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .construction-swiper {
+            width: 100%;
+            padding: 20px 0 60px;
+        }
+
+        .construction-swiper .swiper-wrapper {
+            padding-left: 40px;
+        }
+
+        .construction-swiper .swiper-slide {
+            width: 320px;
+            background: var(--text-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .construction-swiper .swiper-slide:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .slide-img-wrap {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .slide-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .construction-swiper .swiper-slide:hover .slide-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .slide-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gold);
+            color: var(--text-light);
+            font-family: var(--font-sans);
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            border-radius: 30px;
+        }
+
+        .slide-info {
+            padding: 28px 24px;
+        }
+
+        .slide-height {
+            font-family: var(--font-serif);
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .slide-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .slide-desc {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .swiper-pagination {
+            bottom: 15px !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* ============================================
+           [12. 프로젝트 섹션]
+        ============================================ */
+        .projects {
+            padding: 160px 40px;
+            background: var(--bg-light);
+        }
+
+        .projects__header {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .projects__title {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 300;
+            letter-spacing: -2px;
+            line-height: 0.9;
+            opacity: 0;
+            transform: translateY(60px);
+        }
+
+        .projects__count {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .projects__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(60px);
+        }
+
+        .project-card__image {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: #e5e5e0;
+            border-radius: 8px;
+        }
+
+        .project-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover .project-card__image img {
+            transform: scale(1.08);
+        }
+
+        .project-card__info {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .project-card__title {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .project-card__category {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .project-card__year {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+           [13. 어워드 섹션]
+        ============================================ */
+        .awards {
+            padding: 140px 40px;
+            background: var(--bg-light);
+        }
+
+        .awards__container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .awards__label {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 60px;
+            text-align: center;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .awards__list {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .award {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .award__icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--gold);
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .award:hover .award__icon {
+            opacity: 1;
+        }
+
+        .award__name {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .award__count {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           [14. 컨택 섹션]
+        ============================================ */
+        .contact {
+            padding: 200px 40px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact__bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-serif);
+            font-size: clamp(6rem, 20vw, 16rem);
+            font-weight: 700;
+            opacity: 0.03;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .contact__label {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 40px;
+            position: relative;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact__title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 60px;
+            position: relative;
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .contact__title strong {
+            font-weight: 600;
+            color: var(--gold-light);
+        }
+
+        .contact__button {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 500;
+            padding: 20px 60px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .contact__button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .contact__button:hover {
+            color: var(--bg-dark);
+            border-color: var(--gold);
+        }
+
+        .contact__button:hover::before {
+            left: 0;
+        }
+
+        /* ============================================
+           [15. 푸터]
+        ============================================ */
+        .footer {
+            padding: 40px;
+            background: var(--bg-darker);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer__content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer__copy {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer__link {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .footer__link:hover {
+            color: var(--gold);
+        }
+
+        /* ============================================
+           [16. 반응형]
+        ============================================ */
+        @media (min-width: 768px) {
+            .heritage__grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+            }
+
+            .projects__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .construction-swiper .swiper-slide {
+                width: 360px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .nav {
+                padding: 40px 60px;
+            }
+
+            .heritage {
+                padding: 220px 60px;
+            }
+
+            .heritage__grid {
+                gap: 100px;
+            }
+
+            .skills {
+                padding: 180px 60px;
+            }
+
+            .projects {
+                padding: 200px 60px;
+            }
+
+            .awards {
+                padding: 180px 60px;
+            }
+
+            .contact {
+                padding: 260px 60px;
+            }
+
+            .construction-swiper .swiper-slide {
+                width: 400px;
+            }
+
+            .construction-swiper .swiper-wrapper {
+                padding-left: 60px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .nav__menu {
+                display: none;
+            }
+
+            .scroll-nav {
+                right: 20px;
+            }
+
+            .heritage__image-caption {
+                font-size: 3rem;
+                bottom: -20px;
+            }
+
+            .construction-swiper .swiper-wrapper {
+                padding-left: 24px;
+            }
+
+            .construction-swiper .swiper-slide {
+                width: 280px;
+            }
+
+            .slide-img-wrap {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 로딩 스크린 -->
+    <div class="loader">
+        <div class="loader__text">
+            <span>압</span><span>구</span><span>정</span><span>&nbsp;</span><span>삼</span><span>성</span>
+        </div>
+    </div>
+
+    <!-- 커스텀 커서 -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- 네비게이션 -->
+    <nav class="nav">
+        <a href="#" class="nav__logo">압구정 삼성</a>
+        <ul class="nav__menu">
+            <li><a href="#heritage" class="nav__item">브랜드</a></li>
+            <li><a href="#projects" class="nav__item">프리미엄</a></li>
+            <li><a href="#contact" class="nav__item">상담문의</a></li>
+        </ul>
+    </nav>
+
+    <!-- 스크롤 인디케이터 -->
+    <div class="scroll-nav">
+        <span class="scroll-nav__label">Scroll</span>
+        <div class="scroll-nav__line">
+            <div class="scroll-nav__progress"></div>
+        </div>
+    </div>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="hero__bg">
+            <img src="pic/사진/24년도 달력 소스/DJI_0795-편집-2.jpg" alt="압구정 전경">
+        </div>
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <p class="hero__eyebrow">Beyond Expectations</p>
+            <h1 class="hero__title">
+                <span class="hero__title-line"><span>과거의 압구정을 넘어서는 건</span></span>
+                <span class="hero__title-line"><span>오직 <strong>압구정 삼성</strong>입니다</span></span>
+            </h1>
+        </div>
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- 마퀴 섹션 -->
+    <div class="marquee">
+        <div class="marquee__inner">
+            <div class="marquee__text">Premium <span>★</span> Residence <span>★</span> Apgujeong <span>★</span> Samsung <span>★</span></div>
+            <div class="marquee__text">Premium <span>★</span> Residence <span>★</span> Apgujeong <span>★</span> Samsung <span>★</span></div>
+        </div>
+    </div>
+
+    <!-- 헤리티지 섹션 -->
+    <section class="heritage" id="heritage">
+        <div class="heritage__grid">
+            <div class="heritage__image">
+                <div class="heritage__image-inner">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-004s.jpg" alt="압구정 역사">
+                </div>
+                <span class="heritage__image-caption">HERITAGE</span>
+            </div>
+            <div class="heritage__content">
+                <span class="heritage__label">The Heritage</span>
+                <h2 class="heritage__title">
+                    <strong>권력과 여유</strong>, 부와 풍류를 상징하는
+                    이름이 되다
+                </h2>
+                <p class="heritage__text">
+                    <strong>'압구정'</strong>은 조선 초기 권력자였던 한명회가
+                    자신의 권세를 누리며 즐겨 찾았던 정자에서 유래한 이름으로,
+                    명나라 사신 예겸이 '갈매기와 친하게 지내는 정자'라는
+                    뜻으로 지었다고 전해집니다.
+                    <br><br>
+                    <strong>강남시대의 시작</strong>, 대한민국을 바꾼 곳.
+                    최신 트렌드와 소비 문화를 누리는 <strong>선망의 대상</strong>,
+                    대한민국을 대표하는 부촌이 바로 <strong>압구정</strong>입니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 패럴랙스 섹션 -->
+    <section class="parallax-section">
+        <div class="parallax-bg">
+            <img src="pic/사진/24년도 달력 소스/DJI_0806-편집-3.jpg" alt="압구정 입지">
+        </div>
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <p class="eyebrow">Prime Location</p>
+            <h2 class="title">
+                강남의 도시적 모습과<br>
+                <strong>한강의 자연</strong>이 어우러지는 곳<br>
+                대한민국의 <strong>세계적 랜드마크</strong> 입지
+            </h2>
+            <p class="sub-text">
+                다양한 생활 인프라가 완성된 서울의 최고 프리미엄 지구
+            </p>
+        </div>
+    </section>
+
+    <!-- 스킬 섹션 -->
+    <section class="skills">
+        <div class="skills__container">
+            <span class="skills__label">삼성이 건설한 세계적인 랜드마크</span>
+            <ul class="skills__list">
+                <li class="skills__item">
+                    <span class="skills__item-label">부르즈 칼리파 828M</span>
+                    <span class="skills__item-number">세계 최고층 163층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">메르데카 118 678M</span>
+                    <span class="skills__item-number">동남아 최고층 118층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">타이베이 101 508M</span>
+                    <span class="skills__item-number">대만 최고층 101층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">라흐타 센터 462M</span>
+                    <span class="skills__item-number">유럽 최고층 87층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">페트로나스 타워 452M</span>
+                    <span class="skills__item-number">세계 최고층 쌍둥이 타워 88층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">타워팰리스 265M</span>
+                    <span class="skills__item-number">국내 최초 초고층 주상복합 69층</span>
+                </li>
+                <li class="skills__item">
+                    <span class="skills__item-label">레미안 첼리투스 206M</span>
+                    <span class="skills__item-number">한강변 최고층 아파트 56층</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Swiper 슬라이더 섹션 -->
+    <section class="slider-section">
+        <div class="slider-header">
+            <span class="label">Construction History</span>
+            <h2 class="title">
+                <strong>압도적인 기술력</strong>으로<br>
+                세계를 건설하다
+            </h2>
+            <p class="sub-text">
+                삼성은 세계 최고 높이의 빌딩을 비롯 다수의<br>
+                초고층 프로젝트 성공으로 기술력을 입증했습니다
+            </p>
+        </div>
+
+        <div class="swiper construction-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/초고층/부르즈/부르즈할리파-1470927572.jpg" alt="부르즈 칼리파">
+                        <span class="slide-badge">WORLD NO.1</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">828M</div>
+                        <div class="slide-title">부르즈 칼리파</div>
+                        <p class="slide-desc">두바이, UAE · 세계 최고층 163층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/초고층/메르데카/shutterstock_2278071081.jpg" alt="메르데카 118">
+                        <span class="slide-badge">SOUTHEAST ASIA</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">678M</div>
+                        <div class="slide-title">메르데카 118</div>
+                        <p class="slide-desc">쿠알라룸푸르 · 동남아 최고층 118층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/초고층/타이페이101/타이베이101.jpg" alt="타이베이 101">
+                        <span class="slide-badge">TAIWAN</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">508M</div>
+                        <div class="slide-title">타이베이 101</div>
+                        <p class="slide-desc">타이베이, 대만 · 대만 최고층 101층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/초고층/라흐타센터/라흐타센터.jpg" alt="라흐타 센터">
+                        <span class="slide-badge">EUROPE</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">462M</div>
+                        <div class="slide-title">라흐타 센터</div>
+                        <p class="slide-desc">상트페테르부르크 · 유럽 최고층 87층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/초고층/페트로나스 트윈타워/페트로나스타워_1.jpg" alt="페트로나스 타워">
+                        <span class="slide-badge">ICONIC</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">452M</div>
+                        <div class="slide-title">페트로나스 트윈 타워</div>
+                        <p class="slide-desc">쿠알라룸푸르 · 세계 최고층 쌍둥이 88층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/사진/제일기획/1/_92A3013.jpg" alt="타워팰리스">
+                        <span class="slide-badge">KOREA</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">265M</div>
+                        <div class="slide-title">타워팰리스</div>
+                        <p class="slide-desc">서울 · 국내 최초 초고층 주상복합 69층</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-img-wrap">
+                        <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-016s.jpg" alt="레미안 첼리투스">
+                        <span class="slide-badge">HANGANG</span>
+                    </div>
+                    <div class="slide-info">
+                        <div class="slide-height">206M</div>
+                        <div class="slide-title">레미안 첼리투스</div>
+                        <p class="slide-desc">서울 · 한강변 최고층 아파트 56층</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 프로젝트 섹션 -->
+    <section class="projects" id="projects">
+        <div class="projects__header">
+            <h2 class="projects__title">Premium</h2>
+            <span class="projects__count">(4 features)</span>
+        </div>
+        <div class="projects__grid">
+            <article class="project-card">
+                <div class="project-card__image">
+                    <img src="pic/사진/24년도 달력 소스/DJI_0062_1-12.jpg" alt="압구정 입지">
+                </div>
+                <div class="project-card__info">
+                    <div>
+                        <h3 class="project-card__title">자연 환경 프리미엄</h3>
+                        <p class="project-card__category">한강과 서울숲 조망권, 녹지 비율이 높은 공원형 열린 단지</p>
+                    </div>
+                    <span class="project-card__year">Location</span>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-card__image">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-024s.jpg" alt="원하이드파크">
+                </div>
+                <div class="project-card__info">
+                    <div>
+                        <h3 class="project-card__title">세계 명품 주거단지 연구</h3>
+                        <p class="project-card__category">런던 원 하이드 파크 - 자연과 도시적 세련미가 공존하는 세계 최고급 주거</p>
+                    </div>
+                    <span class="project-card__year">Global</span>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-card__image">
+                    <img src="pic/사진/24년도 달력 소스/_C6A3388-편집-2.jpg" alt="조망특화 설계">
+                </div>
+                <div class="project-card__info">
+                    <div>
+                        <h3 class="project-card__title">조망특화 설계 기술</h3>
+                        <p class="project-card__category">첨단 시뮬레이션을 활용한 조망 특화 설계로 최고의 조망 선사</p>
+                    </div>
+                    <span class="project-card__year">Technology</span>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-card__image">
+                    <img src="pic/사진/제일기획/2/DJI_0040.JPG" alt="월드 랜드마크">
+                </div>
+                <div class="project-card__info">
+                    <div>
+                        <h3 class="project-card__title">World Landmark Skyline</h3>
+                        <p class="project-card__category">70층 압구정 랜드마크 건설의 완벽한 파트너, 삼성물산</p>
+                    </div>
+                    <span class="project-card__year">Landmark</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- 어워드 섹션 -->
+    <section class="awards">
+        <div class="awards__container">
+            <span class="awards__label">World Landmark Skyline</span>
+            <div class="awards__list">
+                <div class="award">
+                    <div class="award__icon">◆</div>
+                    <div class="award__name">삼성물산</div>
+                    <div class="award__count">세계 최고 기술력</div>
+                </div>
+                <div class="award">
+                    <div class="award__icon">★</div>
+                    <div class="award__name">70층</div>
+                    <div class="award__count">압구정 랜드마크 건설</div>
+                </div>
+                <div class="award">
+                    <div class="award__icon">●</div>
+                    <div class="award__name">압구정동</div>
+                    <div class="award__count">대한민국 No.1 입지</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 컨택 섹션 -->
+    <section class="contact" id="contact">
+        <span class="contact__bg-text">SAMSUNG</span>
+        <span class="contact__label">상담 문의</span>
+        <h2 class="contact__title">
+            Beyond Expectations<br>
+            <strong>압구정 삼성</strong>
+        </h2>
+        <a href="tel:1588-0000" class="contact__button">
+            1588-0000
+        </a>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer__content">
+            <span class="footer__copy">© 2024 압구정 삼성. All rights reserved.</span>
+            <div class="footer__links">
+                <a href="#" class="footer__link">개인정보처리방침</a>
+                <a href="#" class="footer__link">이용약관</a>
+                <a href="#" class="footer__link">사업주체</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <!-- Swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // ============================================
+        // 1. Lenis Smooth Scroll 초기화
+        // ============================================
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // ============================================
+        // 2. GSAP 플러그인 등록 & Lenis 연동
+        // ============================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // ============================================
+        // 3. 로딩 애니메이션
+        // ============================================
+        const loader = document.querySelector('.loader');
+        const loaderChars = document.querySelectorAll('.loader__text span');
+
+        const loaderTl = gsap.timeline();
+
+        loaderTl
+            .from(loaderChars, {
+                y: 50,
+                opacity: 0,
+                duration: 0.7,
+                stagger: 0.08,
+                ease: 'power3.out'
+            })
+            .to(loaderChars, {
+                y: -50,
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.04,
+                ease: 'power3.in',
+                delay: 0.6
+            })
+            .to(loader, {
+                yPercent: -100,
+                duration: 1,
+                ease: 'power4.inOut'
+            })
+            .call(() => {
+                loader.style.display = 'none';
+                initAnimations();
+            });
+
+        // ============================================
+        // 4. 메인 애니메이션 초기화
+        // ============================================
+        function initAnimations() {
+            // 히어로 애니메이션
+            const heroTl = gsap.timeline();
+
+            heroTl
+                .to('.hero__eyebrow', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out'
+                })
+                .to('.hero__title-line span', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    stagger: 0.15,
+                    ease: 'power3.out'
+                }, '-=0.6')
+                .to('.scroll-indicator', {
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power2.out'
+                }, '-=0.4');
+
+            // 히어로 배경 패럴랙스
+            gsap.to('.hero__bg', {
+                yPercent: 30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            gsap.to('.hero__bg img', {
+                scale: 1,
+                duration: 2,
+                ease: 'power2.out'
+            });
+
+            // ============================================
+            // 마퀴 애니메이션
+            // ============================================
+            const marqueeInner = document.querySelector('.marquee__inner');
+            const marqueeWidth = document.querySelector('.marquee__text').offsetWidth;
+
+            gsap.to(marqueeInner, {
+                x: -marqueeWidth,
+                duration: 25,
+                ease: 'none',
+                repeat: -1
+            });
+
+            // ============================================
+            // 헤리티지 섹션 애니메이션
+            // ============================================
+            gsap.to('.heritage__image-inner', {
+                clipPath: 'inset(0% 0 0 0)',
+                duration: 1.4,
+                ease: 'power4.inOut',
+                scrollTrigger: {
+                    trigger: '.heritage__image',
+                    start: 'top 70%'
+                }
+            });
+
+            gsap.to('.heritage__image img', {
+                scale: 1,
+                duration: 1.8,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.heritage__image',
+                    start: 'top 70%'
+                }
+            });
+
+            gsap.to('.heritage__label', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.heritage__content',
+                    start: 'top 70%'
+                }
+            });
+
+            gsap.to('.heritage__title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.heritage__content',
+                    start: 'top 70%'
+                }
+            });
+
+            gsap.to('.heritage__text', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.4,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.heritage__content',
+                    start: 'top 70%'
+                }
+            });
+
+            // ============================================
+            // 패럴랙스 섹션
+            // ============================================
+            gsap.to('.parallax-bg', {
+                yPercent: 25,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.parallax-section',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            gsap.to('.parallax-content .eyebrow', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.parallax-section',
+                    start: 'top 60%'
+                }
+            });
+
+            gsap.to('.parallax-content .title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.parallax-section',
+                    start: 'top 60%'
+                }
+            });
+
+            gsap.to('.parallax-content .sub-text', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: 0.4,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.parallax-section',
+                    start: 'top 60%'
+                }
+            });
+
+            // ============================================
+            // 스킬 섹션 애니메이션
+            // ============================================
+            gsap.to('.skills__label', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.skills',
+                    start: 'top 70%'
+                }
+            });
+
+            document.querySelectorAll('.skills__item').forEach((item, i) => {
+                gsap.to(item, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                    delay: i * 0.08,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 85%'
+                    }
+                });
+            });
+
+            // ============================================
+            // 슬라이더 헤더 애니메이션
+            // ============================================
+            gsap.to('.slider-header .label', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.slider-header',
+                    start: 'top 75%'
+                }
+            });
+
+            gsap.to('.slider-header .title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.15,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.slider-header',
+                    start: 'top 75%'
+                }
+            });
+
+            gsap.to('.slider-header .sub-text', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: 0.3,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.slider-header',
+                    start: 'top 75%'
+                }
+            });
+
+            // ============================================
+            // 프로젝트 섹션 애니메이션
+            // ============================================
+            gsap.to('.projects__title', {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.projects__header',
+                    start: 'top 70%'
+                }
+            });
+
+            document.querySelectorAll('.project-card').forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    delay: i * 0.12,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%'
+                    }
+                });
+
+                // 이미지 패럴랙스
+                gsap.to(card.querySelector('img'), {
+                    yPercent: -12,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.2
+                    }
+                });
+            });
+
+            // ============================================
+            // 어워드 섹션 애니메이션
+            // ============================================
+            gsap.to('.awards__label', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.awards',
+                    start: 'top 70%'
+                }
+            });
+
+            document.querySelectorAll('.award').forEach((award, i) => {
+                gsap.to(award, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.15,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: '.awards__list',
+                        start: 'top 70%'
+                    }
+                });
+            });
+
+            // ============================================
+            // 컨택 섹션 애니메이션
+            // ============================================
+            gsap.to('.contact__label', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top 60%'
+                }
+            });
+
+            gsap.to('.contact__title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top 60%'
+                }
+            });
+
+            gsap.to('.contact__button', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: 0.4,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top 60%'
+                }
+            });
+
+            gsap.to('.contact__bg-text', {
+                xPercent: 15,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+
+            // ============================================
+            // 스크롤 프로그레스 바
+            // ============================================
+            gsap.to('.scroll-nav__progress', {
+                height: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.3
+                }
+            });
+        }
+
+        // ============================================
+        // 5. Swiper 초기화
+        // ============================================
+        const constructionSwiper = new Swiper('.construction-swiper', {
+            slidesPerView: 'auto',
+            spaceBetween: 24,
+            centeredSlides: false,
+            grabCursor: true,
+            freeMode: {
+                enabled: true,
+                sticky: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    spaceBetween: 28,
+                },
+                1024: {
+                    spaceBetween: 32,
+                }
+            }
+        });
+
+        // ============================================
+        // 6. 커스텀 커서
+        // ============================================
+        const cursor = document.getElementById('cursor');
+        const cursorFollower = document.getElementById('cursor-follower');
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        gsap.ticker.add(() => {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+
+            gsap.set(cursor, { x: cursorX, y: cursorY, xPercent: -50, yPercent: -50 });
+            gsap.set(cursorFollower, { x: followerX, y: followerY, xPercent: -50, yPercent: -50 });
+        });
+
+        document.querySelectorAll('a, button, .project-card, .swiper-slide').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { scale: 2, duration: 0.3 });
+                gsap.to(cursorFollower, { scale: 1.5, opacity: 0.5, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { scale: 1, duration: 0.3 });
+                gsap.to(cursorFollower, { scale: 1, opacity: 1, duration: 0.3 });
+            });
+        });
+
+        // ============================================
+        // 7. 부드러운 앵커 스크롤
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    lenis.scrollTo(target, {
+                        duration: 1.5,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

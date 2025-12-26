@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>압구정 삼성 | Beyond Expectations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300;400;500;700&family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           [1. 기본 리셋 및 변수 설정]
+        ============================================ */
+        :root {
+            --gold: #c9a962;
+            --gold-light: #e8d5a3;
+            --dark: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --light-gray: #f5f5f5;
+            --text-gray: #888;
+            --white: #ffffff;
+            --font-sans: 'Noto Sans KR', sans-serif;
+            --font-serif: 'Noto Serif KR', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--dark);
+            background-color: var(--white);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ============================================
+           [2. 타이포그래피 시스템]
+        ============================================ */
+        .serif { font-family: var(--font-serif); }
+        .sans { font-family: var(--font-sans); }
+        .text-center { text-align: center; }
+
+        .eyebrow {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        .main-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.75rem, 5vw, 3rem);
+            font-weight: 300;
+            line-height: 1.5;
+            letter-spacing: -0.5px;
+            color: var(--dark);
+            margin-bottom: 28px;
+        }
+
+        .main-title strong {
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .sub-text {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: var(--text-gray);
+            line-height: 2;
+            letter-spacing: 0.3px;
+        }
+
+        .section-number {
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        /* ============================================
+           [3. 네비게이션 바 - Blur 효과]
+        ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: var(--white);
+            transition: color 0.4s ease;
+        }
+
+        nav.scrolled .logo {
+            color: var(--dark);
+        }
+
+        /* ============================================
+           [4. 히어로 섹션 - 풀스크린 이미지]
+        ============================================ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            transform: scale(1);
+            transition: transform 8s ease-out;
+        }
+
+        .hero.visible .hero-bg {
+            transform: scale(1.1);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.6) 50%,
+                rgba(0, 0, 0, 0.8) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--white);
+            padding: 0 30px;
+        }
+
+        .hero .eyebrow {
+            color: var(--gold-light);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero .main-title {
+            color: var(--white);
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero .main-title strong {
+            color: var(--gold-light);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        /* ============================================
+           [5. 콘텐츠 섹션 - 시원한 여백]
+        ============================================ */
+        section {
+            position: relative;
+            padding: 120px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section-content {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* ============================================
+           [6. Parallax 배경 섹션]
+        ============================================ */
+        .parallax-section {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transform: scale(1);
+            transition: transform 0.5s ease-out;
+        }
+
+        .parallax-section:hover .parallax-bg {
+            transform: scale(1.02);
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--white);
+            padding: 60px 30px;
+            max-width: 700px;
+        }
+
+        .parallax-content .eyebrow {
+            color: var(--gold-light);
+        }
+
+        .parallax-content .main-title {
+            color: var(--white);
+        }
+
+        .parallax-content .sub-text {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ============================================
+           [7. 다크 섹션]
+        ============================================ */
+        .dark-section {
+            background-color: var(--dark);
+            color: var(--white);
+        }
+
+        .dark-section .main-title {
+            color: var(--white);
+        }
+
+        .dark-section .sub-text {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ============================================
+           [8. 이미지 그리드 섹션]
+        ============================================ */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .grid-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            aspect-ratio: 4/5;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .grid-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .grid-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 24px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--white);
+        }
+
+        .grid-item-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .grid-item-desc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ============================================
+           [9. 슬라이더 카드 - 입체감]
+        ============================================ */
+        .slider-section {
+            padding: 100px 0;
+            background: var(--light-gray);
+        }
+
+        .slider-header {
+            text-align: center;
+            padding: 0 24px;
+            margin-bottom: 50px;
+        }
+
+        .slider-container {
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 20px 0 40px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide-card {
+            display: inline-block;
+            width: 300px;
+            margin-right: 20px;
+            vertical-align: top;
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.04),
+                0 10px 40px rgba(0, 0, 0, 0.08);
+            white-space: normal;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide-card:first-child {
+            margin-left: 24px;
+        }
+
+        .slide-card:last-child {
+            margin-right: 24px;
+        }
+
+        .slide-card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 12px 20px rgba(0, 0, 0, 0.08),
+                0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .slide-img-wrap {
+            position: relative;
+            height: 360px;
+            overflow: hidden;
+        }
+
+        .slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .slide-card:hover .slide-img {
+            transform: scale(1.05);
+        }
+
+        .slide-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gold);
+            color: var(--white);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .slide-info {
+            padding: 28px 24px;
+        }
+
+        .slide-title {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .slide-subtitle {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .slide-desc {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           [10. 스플릿 섹션 (이미지 + 텍스트)]
+        ============================================ */
+        .split-section {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .split-image {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            min-height: 400px;
+            overflow: hidden;
+        }
+
+        .split-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .split-section:hover .split-image img {
+            transform: scale(1.03);
+        }
+
+        .split-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 30px;
+            background: var(--white);
+        }
+
+        /* ============================================
+           [11. CTA 섹션]
+        ============================================ */
+        .cta-section {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%);
+            text-align: center;
+            padding: 140px 24px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 18px 50px;
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--gold);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: var(--dark);
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        /* ============================================
+           [12. 푸터]
+        ============================================ */
+        footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--white);
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 30px;
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            line-height: 2;
+        }
+
+        /* ============================================
+           [13. 애니메이션]
+        ============================================ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up.delay-1 { transition-delay: 0.1s; }
+        .fade-up.delay-2 { transition-delay: 0.2s; }
+        .fade-up.delay-3 { transition-delay: 0.3s; }
+        .fade-up.delay-4 { transition-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scaleY(0.8);
+            }
+        }
+
+        /* ============================================
+           [14. 반응형 - 태블릿]
+        ============================================ */
+        @media (min-width: 768px) {
+            section {
+                padding: 160px 40px;
+            }
+
+            .eyebrow {
+                font-size: 0.8rem;
+                letter-spacing: 5px;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .slide-card {
+                width: 340px;
+            }
+
+            .split-section {
+                flex-direction: row;
+            }
+
+            .split-image {
+                width: 50%;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .split-content {
+                width: 50%;
+                padding: 80px 60px;
+            }
+        }
+
+        /* ============================================
+           [15. 반응형 - 데스크탑]
+        ============================================ */
+        @media (min-width: 1024px) {
+            section {
+                padding: 200px 60px;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+
+            .slide-card {
+                width: 380px;
+            }
+
+            .slide-card:first-child {
+                margin-left: 60px;
+            }
+
+            .split-content {
+                padding: 100px 80px;
+            }
+
+            .parallax-bg {
+                background-attachment: fixed;
+            }
+        }
+
+        /* 모바일에서 parallax 비활성화 */
+        @media (max-width: 1023px) {
+            .parallax-bg {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 네비게이션 -->
+    <nav id="navbar">
+        <div class="logo">APGUJEONG SAMSUNG</div>
+    </nav>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="eyebrow">Beyond Expectations</p>
+            <h1 class="main-title">
+                과거의 압구정을 넘어서는 건<br>
+                오직 <strong>압구정 삼성</strong>입니다
+            </h1>
+        </div>
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- 인트로 섹션 -->
+    <section>
+        <div class="section-content text-center">
+            <p class="section-number fade-up">01</p>
+            <p class="eyebrow fade-up delay-1">THE HERITAGE</p>
+            <h2 class="main-title fade-up delay-2">
+                권력과 여유,<br>
+                <strong>부와 풍류</strong>를 상징하는<br>
+                이름이 되다
+            </h2>
+            <p class="sub-text fade-up delay-3">
+                대한민국 최고의 주거 브랜드가<br>
+                새로운 역사를 씁니다
+            </p>
+        </div>
+    </section>
+
+    <!-- Parallax 섹션 -->
+    <div class="parallax-section">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <p class="eyebrow fade-up">PRIME LOCATION</p>
+            <h2 class="main-title fade-up delay-1">
+                강남의 도시적 모습과<br>
+                <strong>한강의 자연</strong>이<br>
+                어우러지는 곳
+            </h2>
+            <p class="sub-text fade-up delay-2">
+                다양한 생활 인프라가 완성된<br>
+                서울의 최고 프리미엄 지구
+            </p>
+        </div>
+    </div>
+
+    <!-- 다크 섹션 -->
+    <section class="dark-section">
+        <div class="section-content text-center">
+            <p class="section-number fade-up">02</p>
+            <p class="eyebrow fade-up delay-1">WORLD CLASS PLAN</p>
+            <h2 class="main-title fade-up delay-2">
+                대한민국의<br>
+                <strong>세계적 랜드마크</strong> 입지
+            </h2>
+            <p class="sub-text fade-up delay-3">
+                글로벌 도시 서울의 중심,<br>
+                최고의 가치를 담은 공간이 탄생합니다
+            </p>
+        </div>
+    </section>
+
+    <!-- 이미지 그리드 섹션 -->
+    <section style="background: var(--light-gray);">
+        <div class="section-content text-center">
+            <p class="section-number fade-up">03</p>
+            <p class="eyebrow fade-up delay-1">LIFESTYLE</p>
+            <h2 class="main-title fade-up delay-2">
+                일상이 <strong>예술</strong>이 되는<br>
+                라이프스타일
+            </h2>
+        </div>
+        <div class="image-grid">
+            <div class="grid-item fade-up delay-1">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="럭셔리 인테리어">
+                <div class="grid-item-overlay">
+                    <h3 class="grid-item-title">Premium Interior</h3>
+                    <p class="grid-item-desc">최고급 마감재와 디자인</p>
+                </div>
+            </div>
+            <div class="grid-item fade-up delay-2">
+                <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80" alt="스카이 라운지">
+                <div class="grid-item-overlay">
+                    <h3 class="grid-item-title">Sky Lounge</h3>
+                    <p class="grid-item-desc">도심 속 프라이빗 휴식</p>
+                </div>
+            </div>
+            <div class="grid-item fade-up delay-3">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="가든 테라스">
+                <div class="grid-item-overlay">
+                    <h3 class="grid-item-title">Garden Terrace</h3>
+                    <p class="grid-item-desc">자연과 함께하는 일상</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 슬라이더 섹션 -->
+    <section class="slider-section">
+        <div class="slider-header">
+            <p class="section-number fade-up">04</p>
+            <p class="eyebrow fade-up delay-1">CONSTRUCTION HISTORY</p>
+            <h2 class="main-title fade-up delay-2">
+                <strong>압도적인 기술력</strong>으로<br>
+                세계를 건설하다
+            </h2>
+            <p class="sub-text fade-up delay-3">
+                세계 최고층 빌딩을 비롯한 성공 신화
+            </p>
+        </div>
+
+        <div class="slider-container fade-up delay-4">
+            <div class="slide-card">
+                <div class="slide-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&q=80" class="slide-img" alt="부르즈 칼리파">
+                    <span class="slide-badge">WORLD NO.1</span>
+                </div>
+                <div class="slide-info">
+                    <div class="slide-title">828M</div>
+                    <div class="slide-subtitle">부르즈 칼리파</div>
+                    <p class="slide-desc">두바이, UAE · 세계 최고층 빌딩</p>
+                </div>
+            </div>
+            <div class="slide-card">
+                <div class="slide-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1470004914212-05527e49370b?w=600&q=80" class="slide-img" alt="타이베이 101">
+                    <span class="slide-badge">ASIA</span>
+                </div>
+                <div class="slide-info">
+                    <div class="slide-title">508M</div>
+                    <div class="slide-subtitle">타이베이 101</div>
+                    <p class="slide-desc">타이베이, 대만 · 아시아 랜드마크</p>
+                </div>
+            </div>
+            <div class="slide-card">
+                <div class="slide-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80" class="slide-img" alt="페트로나스 타워">
+                    <span class="slide-badge">ICONIC</span>
+                </div>
+                <div class="slide-info">
+                    <div class="slide-title">452M</div>
+                    <div class="slide-subtitle">페트로나스 트윈 타워</div>
+                    <p class="slide-desc">쿠알라룸푸르, 말레이시아</p>
+                </div>
+            </div>
+            <div class="slide-card">
+                <div class="slide-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80" class="slide-img" alt="글로벌 프로젝트">
+                    <span class="slide-badge">GLOBAL</span>
+                </div>
+                <div class="slide-info">
+                    <div class="slide-title">40+</div>
+                    <div class="slide-subtitle">글로벌 프로젝트</div>
+                    <p class="slide-desc">전 세계 40개국 이상 진출</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 스플릿 섹션 -->
+    <section class="split-section">
+        <div class="split-image">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80" alt="럭셔리 리빙">
+        </div>
+        <div class="split-content">
+            <p class="section-number fade-up">05</p>
+            <p class="eyebrow fade-up delay-1">EXCLUSIVE LIVING</p>
+            <h2 class="main-title fade-up delay-2">
+                <strong>단 하나의 선택</strong>이<br>
+                삶의 격을 바꿉니다
+            </h2>
+            <p class="sub-text fade-up delay-3">
+                압구정의 새로운 자부심,<br>
+                오직 선택받은 분들만을 위한<br>
+                프리미엄 레지던스
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA 섹션 -->
+    <section class="cta-section">
+        <div class="section-content text-center">
+            <p class="eyebrow fade-up" style="color: var(--gold-light);">CONTACT US</p>
+            <h2 class="main-title fade-up delay-1" style="color: var(--white);">
+                Beyond Expectations<br>
+                <strong>APGUJEONG SAMSUNG</strong>
+            </h2>
+            <button class="cta-button fade-up delay-2">상담 예약하기</button>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="footer-logo">APGUJEONG SAMSUNG</div>
+        <div class="footer-links">
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="#">사업주체</a>
+            <a href="#">시공사</a>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="footer-copyright">
+            본 사이트의 이미지는 소비자의 이해를 돕기 위한 것으로 실제와 다를 수 있습니다.<br>
+            © 2024 APGUJEONG SAMSUNG. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        // 네비게이션 스크롤 효과
+        const navbar = document.getElementById('navbar');
+        const hero = document.getElementById('hero');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 히어로 섹션 활성화
+        setTimeout(() => {
+            hero.classList.add('visible');
+        }, 100);
+
+        // Intersection Observer - 스크롤 애니메이션
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // fade-up 클래스를 가진 모든 요소 관찰
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 부드러운 스크롤 (Safari 지원)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

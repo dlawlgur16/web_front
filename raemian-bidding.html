@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>래미안 압구정 | 삼성물산 재건축 제안</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #080808;
+            --color-bg-light: #0f0f0f;
+            --color-bg-card: #141414;
+            --color-text: #ffffff;
+            --color-text-muted: #7a7a7a;
+            --color-text-light: #b0b0b0;
+            --color-accent: #b8956c;
+            --color-accent-light: #d4b896;
+            --color-accent-dark: #8a6d4a;
+            --color-line: rgba(255,255,255,0.08);
+            --font-serif: 'Noto Serif KR', serif;
+            --font-display: 'Cormorant Garamond', serif;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--color-accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            flex-direction: column;
+        }
+
+        .loading-logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.8em;
+            color: var(--color-accent);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 1px;
+            background: var(--color-line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent));
+        }
+
+        .loading-percent {
+            margin-top: 1.5rem;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: var(--color-text-muted);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .nav.scrolled {
+            padding: 1.2rem 5%;
+            background: rgba(8,8,8,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-line);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            color: var(--color-text);
+            text-transform: uppercase;
+        }
+
+        .nav-logo span {
+            color: var(--color-accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--color-text-light);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            font-weight: 400;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-accent);
+            transition: width 0.4s var(--transition-smooth);
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: url('pic/사진/24년도 달력 소스/DJI_0795-편집-2.jpg') center center / cover no-repeat;
+            will-change: transform;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg,
+                rgba(8,8,8,0.4) 0%,
+                rgba(8,8,8,0.2) 40%,
+                rgba(8,8,8,0.6) 80%,
+                rgba(8,8,8,0.95) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.6rem 2rem;
+            border: 1px solid var(--color-accent);
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            color: var(--color-accent);
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 200;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-title strong {
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--color-text-light);
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 2.2;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-scroll span {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, var(--color-accent), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: var(--color-text);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(400%); opacity: 0; }
+        }
+
+        /* Section Common */
+        section {
+            padding: 12rem 5%;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 5rem;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 0.4em;
+            color: var(--color-accent);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--color-accent);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            font-weight: 200;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+        }
+
+        .section-title strong {
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+
+        /* Introduction Section */
+        .intro {
+            background: var(--color-bg-light);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 8rem;
+            align-items: center;
+            margin-top: 5rem;
+        }
+
+        .intro-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100px;
+            height: 100px;
+            border-left: 1px solid var(--color-accent);
+            border-top: 1px solid var(--color-accent);
+            z-index: 2;
+        }
+
+        .intro-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 1.2s var(--transition-smooth);
+        }
+
+        .intro-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .intro-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg-light);
+            transform-origin: right;
+        }
+
+        .intro-text {
+            padding-right: 2rem;
+        }
+
+        .intro-text h3 {
+            font-size: 1.6rem;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+        }
+
+        .intro-text h3 strong {
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+
+        .intro-text p {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            line-height: 2.4;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Heritage Timeline */
+        .heritage {
+            background: var(--color-bg);
+            padding-top: 8rem;
+        }
+
+        .timeline {
+            margin-top: 6rem;
+            position: relative;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background: var(--color-line);
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            margin-bottom: 8rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            direction: rtl;
+        }
+
+        .timeline-item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--color-bg);
+            border: 2px solid var(--color-accent);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            top: 3.5rem;
+            transform: translateX(-50%);
+            background: var(--color-bg);
+            padding: 0.5rem 1.5rem;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--color-accent);
+        }
+
+        .timeline-content {
+            padding-top: 5rem;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .timeline-content p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            line-height: 2.2;
+        }
+
+        .timeline-image {
+            overflow: hidden;
+        }
+
+        .timeline-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.8s var(--transition-smooth);
+        }
+
+        .timeline-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Why Samsung */
+        .why-samsung {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-samsung-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-197s.jpg') center center / cover no-repeat;
+            opacity: 0.25;
+            filter: grayscale(30%);
+        }
+
+        .why-samsung-content {
+            position: relative;
+            z-index: 2;
+            max-width: 750px;
+        }
+
+        .why-samsung .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 2.5rem;
+        }
+
+        .why-samsung p {
+            font-size: 1.05rem;
+            line-height: 2.4;
+            color: var(--color-text-light);
+        }
+
+        .key-message {
+            margin-top: 3.5rem;
+            padding: 2.5rem 3rem;
+            border-left: 2px solid var(--color-accent);
+            background: linear-gradient(90deg, rgba(184, 149, 108, 0.08), transparent);
+        }
+
+        .key-message p {
+            font-size: 1.3rem;
+            color: var(--color-text);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 2;
+        }
+
+        /* Location Analysis */
+        .location {
+            background: var(--color-bg-light);
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 5rem;
+        }
+
+        .location-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            cursor: pointer;
+        }
+
+        .location-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s var(--transition-smooth);
+        }
+
+        .location-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .location-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: background 0.4s;
+        }
+
+        .location-card:hover .location-card-overlay {
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+        }
+
+        .location-card h4 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.02em;
+        }
+
+        .location-card p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        /* Global Comparison */
+        .global {
+            background: var(--color-bg);
+            overflow: hidden;
+        }
+
+        .global-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 6rem;
+        }
+
+        .global-intro p {
+            font-size: 1.05rem;
+            color: var(--color-text-muted);
+            line-height: 2.2;
+        }
+
+        .swiper-global {
+            overflow: visible !important;
+            padding-bottom: 4rem;
+        }
+
+        .swiper-global .swiper-slide {
+            width: 65%;
+            opacity: 0.3;
+            transition: opacity 0.6s var(--transition-smooth);
+        }
+
+        .swiper-global .swiper-slide-active {
+            opacity: 1;
+        }
+
+        .global-slide {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .global-slide img {
+            width: 100%;
+            height: 65vh;
+            object-fit: cover;
+        }
+
+        .global-slide-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 4rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+        }
+
+        .global-slide-info h4 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        .global-slide-info p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+        }
+
+        .swiper-pagination {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .swiper-pagination-bullet {
+            width: 40px;
+            height: 2px;
+            border-radius: 0;
+            background: rgba(255,255,255,0.2);
+            opacity: 1;
+            transition: all 0.4s;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--color-accent);
+            width: 60px;
+        }
+
+        /* Track Record */
+        .trackrecord {
+            background: var(--color-bg-light);
+        }
+
+        .track-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin: 5rem 0;
+            padding: 4rem 0;
+            border-top: 1px solid var(--color-line);
+            border-bottom: 1px solid var(--color-line);
+        }
+
+        .track-stat {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .track-stat-number {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .track-stat-label {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .track-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 5rem;
+        }
+
+        .track-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .track-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--transition-smooth);
+        }
+
+        .track-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .track-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(8,8,8,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .track-item:hover .track-item-overlay {
+            opacity: 1;
+        }
+
+        .track-item-overlay span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: var(--color-text);
+        }
+
+        /* Technology */
+        .technology {
+            background: var(--color-bg);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            margin-top: 5rem;
+        }
+
+        .tech-item {
+            position: relative;
+        }
+
+        .tech-item-image {
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+
+        .tech-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.8s var(--transition-smooth);
+        }
+
+        .tech-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .tech-item h4 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .tech-item p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            line-height: 2.2;
+        }
+
+        /* Vision */
+        .vision {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .vision-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pic/사진/24년도 달력 소스/DJI_0806-편집-3_보정.jpg') center center / cover no-repeat;
+        }
+
+        .vision-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8,8,8,0.65);
+        }
+
+        .vision-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .vision-content .section-label {
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .vision-content .section-label::before {
+            display: none;
+        }
+
+        .vision-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .vision-content h2 strong {
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+
+        .vision-content p {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 2.2;
+        }
+
+        /* CTA */
+        .cta {
+            background: var(--color-bg-light);
+            text-align: center;
+            padding: 10rem 5%;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 2.8rem;
+            font-weight: 200;
+            margin-bottom: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .cta h2 strong {
+            font-weight: 500;
+            color: var(--color-accent);
+        }
+
+        .cta p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3.5rem;
+            line-height: 2.2;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1.3rem 4rem;
+            border: 1px solid var(--color-accent);
+            color: var(--color-accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            transition: all 0.5s var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-accent);
+            transition: left 0.5s var(--transition-smooth);
+            z-index: -1;
+        }
+
+        .cta-btn:hover {
+            color: var(--color-bg);
+        }
+
+        .cta-btn:hover::before {
+            left: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5%;
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-line);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+        }
+
+        .footer-logo span {
+            color: var(--color-accent);
+        }
+
+        .footer-info {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            letter-spacing: 0.1em;
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent));
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            section {
+                padding: 8rem 5%;
+            }
+
+            .intro-grid {
+                gap: 5rem;
+            }
+
+            .track-gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            section {
+                padding: 6rem 5%;
+            }
+
+            .nav {
+                padding: 1.5rem 5%;
+            }
+
+            .intro-grid,
+            .tech-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .intro-image::before {
+                display: none;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 60px;
+                gap: 2rem;
+            }
+
+            .timeline-item:nth-child(even) {
+                direction: ltr;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .timeline-year {
+                left: 20px;
+                transform: none;
+            }
+
+            .track-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .track-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .swiper-global .swiper-slide {
+                width: 85%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-badge {
+                font-size: 0.55rem;
+                padding: 0.5rem 1.5rem;
+            }
+
+            .track-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .track-stat-number {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .key-message {
+                padding: 2rem;
+            }
+
+            .key-message p {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s var(--transition-smooth);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 1s var(--transition-smooth);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 1s var(--transition-smooth);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-logo">Raemian</div>
+        <div class="loading-bar">
+            <div class="loading-bar-fill"></div>
+        </div>
+        <div class="loading-percent">0%</div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">Raemian <span>Apgujeong</span></div>
+        <div class="nav-menu">
+            <a href="#heritage">Heritage</a>
+            <a href="#location">Location</a>
+            <a href="#global">Global</a>
+            <a href="#trackrecord">Track Record</a>
+            <a href="#vision">Vision</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Samsung C&T × Apgujeong</div>
+            <h1 class="hero-title">
+                압구정, <strong>새로운 시대</strong>를 열다
+            </h1>
+            <p class="hero-desc">
+                반세기의 역사를 품은 대한민국 최고의 주거지,<br>
+                삼성물산이 새로운 랜드마크로 완성합니다.
+            </p>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="intro" id="heritage">
+        <div class="section-header">
+            <div class="section-label">01 Heritage</div>
+            <h2 class="section-title">
+                <strong>압구정</strong>, 그 이름의 무게
+            </h2>
+        </div>
+
+        <div class="intro-grid">
+            <div class="intro-image">
+                <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-116s.jpg" alt="래미안 압구정">
+                <div class="intro-image-overlay"></div>
+            </div>
+            <div class="intro-text">
+                <h3>조선시대부터 이어온<br><strong>대한민국 최고의 주거지</strong></h3>
+                <p>
+                    압구정(狎鷗亭)은 조선 세조 때 한명회가 지은 정자의 이름에서 유래했습니다.
+                    '갈매기와 친하게 지내는 정자'라는 뜻을 품은 이 이름은,
+                    한강을 바라보는 최고의 입지를 상징합니다.
+                </p>
+                <p>
+                    1970년대 현대아파트 건설 이후, 압구정은 대한민국 상류층 주거문화의
+                    중심지로 자리매김했습니다. 반세기가 지난 지금, 새로운 도약을 준비합니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Timeline -->
+    <section class="heritage">
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">1970s</span>
+                    <h4>프리미엄 주거의 시작</h4>
+                    <p>
+                        압구정동에 대규모 아파트 단지가 건설되며
+                        대한민국 프리미엄 주거의 새 장이 열렸습니다.
+                    </p>
+                </div>
+                <div class="timeline-image">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-004s.jpg" alt="1970년대">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">1980-90s</span>
+                    <h4>황금기의 시작</h4>
+                    <p>
+                        압구정은 대한민국 경제성장과 함께 최고급 주거지의
+                        대명사로 자리잡았습니다.
+                    </p>
+                </div>
+                <div class="timeline-image">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-057s.jpg" alt="1980-90년대">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2020s</span>
+                    <h4>새로운 도약</h4>
+                    <p>
+                        50년의 역사를 바탕으로, 압구정은 다시 한번
+                        대한민국 주거문화의 미래를 제시합니다.
+                    </p>
+                </div>
+                <div class="timeline-image">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-141s.jpg" alt="2020년대">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Samsung Section -->
+    <section class="why-samsung">
+        <div class="why-samsung-bg"></div>
+        <div class="why-samsung-content">
+            <div class="section-label">02 Why Samsung</div>
+            <h2 class="section-title">
+                삼성, <strong>압구정의 가치</strong>를 보다
+            </h2>
+            <p>
+                삼성물산은 단순한 재건축을 넘어, 압구정이 가진 역사적 가치와
+                미래 가능성을 동시에 실현할 수 있는 유일한 파트너입니다.
+            </p>
+            <div class="key-message">
+                <p>
+                    "압구정의 과거를 존중하고, 현재를 혁신하며,
+                    미래를 창조하는 것. 그것이 삼성물산의 약속입니다."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Analysis -->
+    <section class="location" id="location">
+        <div class="section-header">
+            <div class="section-label">03 Location</div>
+            <h2 class="section-title">
+                대체 불가능한 <strong>프리미엄 입지</strong>
+            </h2>
+        </div>
+
+        <div class="location-grid">
+            <div class="location-card">
+                <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-063s.jpg" alt="입지 분석 1">
+                <div class="location-card-overlay">
+                    <h4>강남의 중심</h4>
+                    <p>교통, 교육, 문화의 완벽한 인프라가 집약된 최고의 생활권</p>
+                </div>
+            </div>
+            <div class="location-card">
+                <img src="pic/사진/24년도 달력 소스/DJI_0795-편집-2.jpg" alt="입지 분석 2">
+                <div class="location-card-overlay">
+                    <h4>한강 조망권</h4>
+                    <p>대한민국 최고의 리버뷰를 선사하는 프리미엄 조망</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Comparison -->
+    <section class="global" id="global">
+        <div class="section-header" style="text-align: center;">
+            <div class="section-label" style="justify-content: center;">
+                <span style="display: none;"></span>04 Global Standard
+            </div>
+            <h2 class="section-title">
+                세계 랜드마크와 <strong>어깨를 나란히</strong>
+            </h2>
+        </div>
+
+        <div class="global-intro">
+            <p>
+                뉴욕 센트럴파크, 런던 하이드파크, 도쿄 롯폰기...<br>
+                세계적인 도시의 랜드마크 주거단지와 비교해도 손색없는 가치를 실현합니다.
+            </p>
+        </div>
+
+        <div class="swiper swiper-global">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="global-slide">
+                        <img src="pic/사진/24년도 달력 소스/DJI_0806-편집-3_보정.jpg" alt="글로벌 비교 1">
+                        <div class="global-slide-info">
+                            <h4>World Class Skyline</h4>
+                            <p>세계 주요 도시 프리미엄 주거단지와 비교</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="global-slide">
+                        <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-205s.jpg" alt="글로벌 비교 2">
+                        <div class="global-slide-info">
+                            <h4>Architectural Excellence</h4>
+                            <p>세계적 수준의 건축 미학</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="global-slide">
+                        <img src="pic/사진/제일기획/2/키네틱 필드__0449.jpg" alt="글로벌 비교 3">
+                        <div class="global-slide-info">
+                            <h4>Public Art & Design</h4>
+                            <p>문화와 예술이 함께하는 주거 공간</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Track Record -->
+    <section class="trackrecord" id="trackrecord">
+        <div class="section-header">
+            <div class="section-label">05 Track Record</div>
+            <h2 class="section-title">
+                <strong>검증된 실적</strong>, 신뢰할 수 있는 파트너
+            </h2>
+        </div>
+
+        <div class="track-stats">
+            <div class="track-stat">
+                <div class="track-stat-number">828m</div>
+                <div class="track-stat-label">Burj Khalifa</div>
+            </div>
+            <div class="track-stat">
+                <div class="track-stat-number">69F</div>
+                <div class="track-stat-label">Tower Palace</div>
+            </div>
+            <div class="track-stat">
+                <div class="track-stat-number">Top 5</div>
+                <div class="track-stat-label">Global Builder</div>
+            </div>
+            <div class="track-stat">
+                <div class="track-stat-number">50+</div>
+                <div class="track-stat-label">Years Experience</div>
+            </div>
+        </div>
+
+        <div class="track-gallery">
+            <div class="track-item">
+                <img src="pic/초고층/부르즈/부르즈칼리파 (1).jpg" alt="부르즈 칼리파">
+                <div class="track-item-overlay">
+                    <span>부르즈 칼리파</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/초고층/페트로나스 트윈타워/페트로나스타워_1.jpg" alt="페트로나스 트윈타워">
+                <div class="track-item-overlay">
+                    <span>페트로나스 트윈타워</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/초고층/타이페이101/타이베이101.jpg" alt="타이페이 101">
+                <div class="track-item-overlay">
+                    <span>타이페이 101</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/초고층/라흐타센터/라흐타센터.jpg" alt="라흐타 센터">
+                <div class="track-item-overlay">
+                    <span>라흐타 센터</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/건축물(물산)/ddp/동대문 디자인 플라자1.png" alt="DDP">
+                <div class="track-item-overlay">
+                    <span>동대문 DDP</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/건축물(물산)/인천대교/준공 인천대교 (11).JPG" alt="인천대교">
+                <div class="track-item-overlay">
+                    <span>인천대교</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/사진/24년도 달력 소스/DJI_0806-편집-3_보정.jpg" alt="래미안 원베일리">
+                <div class="track-item-overlay">
+                    <span>래미안 원베일리</span>
+                </div>
+            </div>
+            <div class="track-item">
+                <img src="pic/사진/제일기획/1/_92A3288.jpg" alt="키네틱 미디어월">
+                <div class="track-item-overlay">
+                    <span>키네틱 미디어월</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology -->
+    <section class="technology">
+        <div class="section-header">
+            <div class="section-label">06 Technology</div>
+            <h2 class="section-title">
+                <strong>조망특화 설계</strong> 기술력
+            </h2>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-item-image">
+                    <img src="pic/사진/24년도 달력 소스/DJI_0795-편집-2.jpg" alt="파노라마 리버뷰">
+                </div>
+                <h4>파노라마 리버뷰</h4>
+                <p>
+                    한강의 아름다운 전경을 최대한 담아내는 혁신적인 설계.
+                    모든 세대에서 탁 트인 조망을 경험할 수 있습니다.
+                </p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-item-image">
+                    <img src="pic/사진/23년도 원베일리 사진 원본 _ 강종호 작가/01-실외/RAEMIAN-205s.jpg" alt="스카이라인 최적화">
+                </div>
+                <h4>스카이라인 최적화</h4>
+                <p>
+                    도시의 스카이라인과 조화를 이루면서도
+                    독보적인 존재감을 갖춘 건축 설계를 제안합니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision -->
+    <section class="vision" id="vision">
+        <div class="vision-bg"></div>
+        <div class="vision-overlay"></div>
+        <div class="vision-content">
+            <div class="section-label">07 Vision</div>
+            <h2>
+                World Landmark<br>
+                <strong>Skyline</strong>
+            </h2>
+            <p>
+                압구정은 단순한 재건축이 아닌, 세계적인 랜드마크로 거듭납니다.<br>
+                삼성물산과 함께 대한민국 주거문화의 새로운 역사를 써내려갑니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>함께 만들어가는 <strong>미래</strong></h2>
+            <p>
+                압구정의 새로운 시대, 삼성물산이 입주민 여러분과 함께합니다.<br>
+                최고의 파트너와 함께 최고의 가치를 실현하세요.
+            </p>
+            <a href="#" class="cta-btn">상담 문의하기</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Raemian by <span>Samsung C&T</span></div>
+            <div class="footer-info">© 2024 Samsung C&T Corporation. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // GSAP ScrollTrigger 기본 설정
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Loading Animation
+        const loadingScreen = document.querySelector('.loading-screen');
+        const loadingBarFill = document.querySelector('.loading-bar-fill');
+        const loadingPercent = document.querySelector('.loading-percent');
+
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 12;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadingInterval);
+
+                gsap.to(loadingScreen, {
+                    opacity: 0,
+                    duration: 1,
+                    delay: 0.5,
+                    ease: 'power2.inOut',
+                    onComplete: () => {
+                        loadingScreen.style.display = 'none';
+                        initAnimations();
+                    }
+                });
+            }
+            loadingBarFill.style.width = progress + '%';
+            loadingPercent.textContent = Math.floor(progress) + '%';
+        }, 80);
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Initialize all animations after loading
+        function initAnimations() {
+            // Hero parallax
+            gsap.to('.hero-bg', {
+                yPercent: 35,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+
+            // Hero content animation
+            gsap.from('.hero-badge', {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.hero-title', {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                delay: 0.4,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.hero-desc', {
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                delay: 0.6,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.hero-scroll', {
+                opacity: 0,
+                duration: 1,
+                delay: 1,
+                ease: 'power3.out'
+            });
+
+            // Section labels and titles
+            gsap.utils.toArray('.section-label').forEach(label => {
+                gsap.from(label, {
+                    x: -40,
+                    opacity: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: label,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.section-title').forEach(title => {
+                gsap.from(title, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1.2,
+                    scrollTrigger: {
+                        trigger: title,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Intro image reveal
+            gsap.to('.intro-image-overlay', {
+                scaleX: 0,
+                duration: 1.4,
+                ease: 'power4.inOut',
+                scrollTrigger: {
+                    trigger: '.intro-image',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Intro text
+            gsap.from('.intro-text h3, .intro-text p', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '.intro-text',
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Timeline items
+            gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+                gsap.from(item, {
+                    y: 80,
+                    opacity: 0,
+                    duration: 1.2,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Why Samsung parallax
+            gsap.to('.why-samsung-bg', {
+                yPercent: 25,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.why-samsung',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.5
+                }
+            });
+
+            gsap.from('.why-samsung-content', {
+                y: 100,
+                opacity: 0,
+                duration: 1.4,
+                scrollTrigger: {
+                    trigger: '.why-samsung',
+                    start: 'top 60%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Location cards
+            gsap.utils.toArray('.location-card').forEach((card, i) => {
+                gsap.from(card, {
+                    y: 80,
+                    opacity: 0,
+                    duration: 1,
+                    delay: i * 0.2,
+                    scrollTrigger: {
+                        trigger: '.location-grid',
+                        start: 'top 75%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Track stats counter animation
+            gsap.utils.toArray('.track-stat').forEach((stat, i) => {
+                gsap.from(stat, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: i * 0.15,
+                    scrollTrigger: {
+                        trigger: '.track-stats',
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Track gallery
+            gsap.utils.toArray('.track-item').forEach((item, i) => {
+                gsap.from(item, {
+                    scale: 0.9,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: '.track-gallery',
+                        start: 'top 75%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Tech items
+            gsap.utils.toArray('.tech-item').forEach((item, i) => {
+                gsap.from(item, {
+                    y: 80,
+                    opacity: 0,
+                    duration: 1,
+                    delay: i * 0.25,
+                    scrollTrigger: {
+                        trigger: '.tech-grid',
+                        start: 'top 75%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Vision parallax
+            gsap.to('.vision-bg', {
+                yPercent: 30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.vision',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.5
+                }
+            });
+
+            gsap.from('.vision-content', {
+                y: 80,
+                opacity: 0,
+                duration: 1.4,
+                scrollTrigger: {
+                    trigger: '.vision',
+                    start: 'top 60%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // CTA
+            gsap.from('.cta-content', {
+                y: 60,
+                opacity: 0,
+                duration: 1.2,
+                scrollTrigger: {
+                    trigger: '.cta',
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Scroll progress
+            gsap.to('.scroll-progress', {
+                width: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.3
+                }
+            });
+        }
+
+        // Initialize Swiper
+        const globalSwiper = new Swiper('.swiper-global', {
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            spaceBetween: 40,
+            loop: true,
+            speed: 1000,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
